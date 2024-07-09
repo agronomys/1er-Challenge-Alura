@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        textarea, button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: none;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            background: #4facfe;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #00d8fe;
+        }
+
+        .output {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .output textarea {
+            width: 70%;
+            background: #f0f0f0;
+        }
+
+        .output button {
+            width: 25%;
+            margin: 0;
+            background: #ff4081;
+        }
+
+        .output button:hover {
+            background: #ff80ab;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Encriptador y Desencriptador de Texto</h1>
+        <p>Ingrese texto aquí (solo letras minúsculas y sin acentos):</p>
+        <textarea id="inputText" rows="4"></textarea>
+        <button onclick="encryptText()">Encriptar</button>
+        <button onclick="decryptText()">Desencriptar</button>
+        <div class="output">
+            <textarea id="outputText" rows="4" readonly></textarea>
+            <button onclick="copyText()">Copiar</button>
+        </div>
+        <p id="validationMessage" style="color: red;"></p>
+        <footer>
+            <p>Roni Diaz 2024</p>
+        </footer>
+    </div>
+    <script>
+        function encryptText() {
+            const inputText = document.getElementById('inputText').value;
+            const validationMessage = document.getElementById('validationMessage');
+            if (/^[a-z\s]*$/.test(inputText)) {
+                validationMessage.textContent = '';
+                let encryptedText = '';
+                for (let char of inputText) {
+                    if (char === ' ') {
+                        encryptedText += ' ';
+                    } else {
+                        encryptedText += String.fromCharCode(((char.charCodeAt(0) - 97 + 1) % 26) + 97);
+                    }
+                }
+                document.getElementById('outputText').value = encryptedText;
+            } else {
+                validationMessage.textContent = 'Por favor, ingrese solo letras minúsculas y sin acentos';
+            }
+        }
+
+        function decryptText() {
+            const inputText = document.getElementById('inputText').value;
+            const validationMessage = document.getElementById('validationMessage');
+            if (/^[a-z\s]*$/.test(inputText)) {
+                validationMessage.textContent = '';
+                let decryptedText = '';
+                for (let char of inputText) {
+                    if (char === ' ') {
+                        decryptedText += ' ';
+                    } else {
+                        decryptedText += String.fromCharCode(((char.charCodeAt(0) - 97 - 1 + 26) % 26) + 97);
+                    }
+                }
+                document.getElementById('outputText').value = decryptedText;
+            } else {
+                validationMessage.textContent = 'Por favor, ingrese solo letras minúsculas y sin acentos';
+            }
+        }
+
+        function copyText() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            outputText.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+        }
+    </script>
+</body>
+</html>
